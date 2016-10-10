@@ -3,7 +3,8 @@
 //Parallel Programming Date: 10/9/2016
 
 //Reads N sets of data from a file called data.dat and processes them using 
-//the FFT-Cooley Tukey Algorithm
+//the FFT-Cooley Tukey Algorithm. When building with gcc compiler, you must use -lm 
+//parameter to let the compiler know program is using math.h on Maverick
 
 #include <stdio.h>
 #include <math.h>
@@ -23,24 +24,25 @@ int main()
 	
 	FILE *fp;
 
-	fopen_s(&fp, "data.dat", "r");
+	fp = fopen("data.dat", "r");
 	
 	struct ComplexNum Xk;
 	struct ComplexNum x[N];
 	struct ComplexNum evenP;
 	struct ComplexNum oddP;
 	double c, s, realPart, imgPart;
+	int m, k, i;
 
-	for (int i = 0; i < N; i++)
+	for (i = 0; i < N; i++)
 	{
-		fscanf_s(fp, "%lf", &x[i].real);
-		fscanf_s(fp, "%lf", &x[i].imag);
+		fscanf(fp, "%lf", &x[i].real);
+		fscanf(fp, "%lf", &x[i].imag);
 
 	}
 
 	printf("TOTAL PROCESSED SAMPLES: %d\n", N);
 
-	for (int k = 0; k < MAX_K; k++)
+	for (k = 0; k < MAX_K; k++)
 	{
 		double theta = (-2 * PI * k) / (N / 2);
 
@@ -48,8 +50,8 @@ int main()
 		evenP.imag = 0;
 		oddP.real = 0;
 		oddP.imag = 0;
-
-		for (int m = 0; m < N / 2; m++)
+		
+		for ( m = 0; m < N / 2; m++)
 		{
 			//Even
 			c = cos(theta * m);
